@@ -1,0 +1,68 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: knative-services-gateway
+  namespace: knative-monitoring
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http-knative-services
+        protocol: HTTP
+      hosts:
+        - knative-grafana.127.0.0.1.xip.io
+        - knative-prometheus.127.0.0.1.xip.io
+        - knative-tekton.127.0.0.1.xip.io
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana-virtual-service
+  namespace: knative-monitoring
+spec:
+  hosts:
+    - "knative-grafana.127.0.0.1.xip.io"
+  gateways:
+    - knative-services-gateway
+  http:
+    - route:
+        - destination:
+            host: grafana.knative-monitoring.svc.cluster.local
+            port:
+              number: 30802
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: prometheus-virtual-service
+  namespace: knative-monitoring
+spec:
+  hosts:
+    - "knative-prometheus.127.0.0.1.xip.io"
+  gateways:
+    - knative-services-gateway
+  http:
+    - route:
+        - destination:
+            host: prometheus-system-np.knative-monitoring.svc.cluster.local
+            port:
+              number: 8080
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: tekton-virtual-service
+  namespace: knative-monitoring
+spec:
+  hosts:
+    - "knative-tekton.127.0.0.1.xip.io"
+  gateways:
+    - knative-services-gateway
+  http:
+    - route:
+        - destination:
+            host: tekton-dashboard.tekton-pipelines.svc.cluster.local
+            port:
+              number: 9097

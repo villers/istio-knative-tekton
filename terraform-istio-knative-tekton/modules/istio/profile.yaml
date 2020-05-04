@@ -1,0 +1,31 @@
+apiVersion: install.istio.io/v1alpha2
+kind: IstioControlPlane
+spec:
+  values:
+    prometheus:
+      enabled: false
+    mixer:
+      adapters:
+        prometheus:
+          enabled: true
+    pilot:
+      autoscaleMin: 2
+      traceSampling: 100
+    grafana:
+      datasources:
+        datasources.yaml:
+          datasources:
+            - name: Prometheus
+              type: prometheus
+              access: proxy
+              org_id: 1
+              url: http://prometheus-system-np.knative-monitoring.svc.cluster.local:8080
+              version: 1
+              editable: false
+
+    kiali:
+      contextPath: /
+      createDemoSecret: true
+      dashboard:
+        grafanaURL: http://grafana-istio.127.0.0.1.xip.io
+        jaegerURL: http://jaeger-istio.127.0.0.1.xip.io

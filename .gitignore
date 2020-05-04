@@ -1,0 +1,4 @@
+.idea
+*.tfstate
+.terraform
+terraform-istio-knative-tekton/k8s
