@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta1
+kind: Config
+build:
+  artifacts:
+    - image: dev.local/helloworld-go
+      context: src/helloworld-go
+    - image: dev.local/helloworld-php
+      context: src/helloworld-php
+profiles:
+  - name: local
+    deploy:
+      kustomize:
+        paths:
+          - deploy/overlays/local
+        flags:
+          global:
+            - -n=dev
+    activation:
+      - env: ENV=local
+      - kubeContext: docker-desktop
+        command: dev

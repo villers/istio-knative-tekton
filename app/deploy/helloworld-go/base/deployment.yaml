@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helloworld-go
+  template:
+    metadata:
+      labels:
+        app: helloworld-go
+    spec:
+      containers:
+        - name: helloworld-go
+          image: dev.local/helloworld-go
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http-server
+              containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"

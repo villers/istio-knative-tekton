@@ -1,0 +1,13 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: helloworld-go-knative # The name of the app
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/helloworld-go
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TARGET # The environment variable printed out by the sample app
+              value: "Go Sample v1"

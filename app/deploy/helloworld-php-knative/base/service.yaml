@@ -1,0 +1,13 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: helloworld-php-knative # The name of the app
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/helloworld-php
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TARGET # The environment variable printed out by the sample app
+              value: "PHP Sample v1"

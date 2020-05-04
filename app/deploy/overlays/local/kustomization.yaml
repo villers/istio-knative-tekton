@@ -1,0 +1,7 @@
+bases:
+  - ../../helloworld-go/overlays/local
+  - ../../helloworld-go-knative/overlays/local
+  - ../../helloworld-php-knative/overlays/local
+resources:
+ - namespace.yaml
+namespace: dev

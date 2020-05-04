@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  namespace: default
+  name: helloworld-go
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+    - port:
+        number: 80
+        name: http-server
+        protocol: HTTP
+      hosts:
+        - "*.127.0.0.1.xip.io"
